@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 void printArray(int *array, int length) {
@@ -10,10 +11,12 @@ void insertionSort(int* values, int length) {
     for (int i = 1; i < length; i++) {
         int key = values[i];
         int j = i - 1;
+
         while (j > 0 && values[j] > key) {
             values[j + 1] = values[j];
             j--;
         }
+
         values[j + 1] = key;
     }
 }
@@ -27,9 +30,13 @@ int main() {
 
     cout << endl << "Ordering..." << endl;
 
-    insertionSort(values, length);
+    auto start = chrono::high_resolution_clock::now();
+    insertionSort(values, length);    
+    auto stop = chrono::high_resolution_clock::now();
+    auto elapsed = chrono::duration_cast<chrono::microseconds>(stop - start);
 
     cout << "Ordered array: ";
     printArray(values, length);
+    cout << endl << "Ordered " << length << " elements in " << elapsed.count() << " ms.";
     return 0;
 }
